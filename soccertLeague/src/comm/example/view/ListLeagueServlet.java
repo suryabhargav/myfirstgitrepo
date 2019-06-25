@@ -93,6 +93,7 @@ public class ListLeagueServlet extends HttpServlet {
 		 out.println("</head>");
 		 out.println("<body>");
 		 out.println("<table border='1'><th>Title</th><th>Year</th><th>Season</th>");
+		 
 
 		 for(League l:leagueList)
 		 {
@@ -102,6 +103,7 @@ public class ListLeagueServlet extends HttpServlet {
 		 }
 
 		 out.println("</table>");
+		 out.println("<button onclick=<a href=add_league.view></a>back</button>");
 		 out.println("</body>");
 		 out.println("</html>");
 		

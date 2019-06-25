@@ -1,0 +1,168 @@
+mysql> select last_name,salary from employees where salary>12000;
++-----------+----------+
+| last_name | salary   |
++-----------+----------+
+| King      | 24000.00 |
+| Kochhar   | 17000.00 |
+| De Haan   | 17000.00 |
+| Russell   | 14000.00 |
+| Partners  | 13500.00 |
+| Hartstein | 13000.00 |
++-----------+----------+
+6 rows in set (0.00 sec)
+
+mysql> select last_name,department_id from employees where employee_id=176;
++-----------+---------------+
+| last_name | department_id |
++-----------+---------------+
+| Taylor    |            80 |
++-----------+---------------+
+1 row in set (0.00 sec)
+select last_name, salary, commission_pct from employees where commission_pct is not null order by salary, commission_pct;
+select last_name, salary from employees where salary> &Salary;
+
+ select employee_id, last_name, salary, department_id from employees where manager_id= &manager*order by last_name;**order by salary;***order by employee_id;
+
+
+SELECT employee_id, CONCAT(first_name, last_name) NAME, job_id, LENGTH (last_name), INSTR(last_name, 'a') "Contains 'a'?" FROM   employeesWHERE  SUBSTR(job_id, 4) = 'REP';
+
+SELECT ROUND(45.923,2), ROUND(45.923,0),ROUND(45.923,-1) FROM   DUAL;
+
+SELECT last_name, salary, MOD(salary, 5000) FROM   employees WHERE  job_id = 'SA_REP';
+
+
+SELECT last_name, salary, NVL(commission_pct, 0),(salary*12) + (salary*12*NVL(commission_pct, 0)) AN_SAL FROM employees;
+
+
+mysql> select employee_id,last_name,salary ,salary+(salary*15.5/100) 'new salary' from employees;
+
+
+select employee_id, last_name, salary, salary+(salary*15.5/100) "New Salary", (salary+(salary*15.5/100))-salary "Increses"
+from employees;
+
+
+select initcap(last_name) "Name", length(last_name) "Length of Name" from employees where last_name like 'J%' or last_name like 'A%' or last_name like 'M%' order by last_name;
+
+4.select initcap(last_name) "Name", length(last_name) "Length of Name" from employees where last_name like 'J%' or last_name like 'A%' or last_name like 'M%' order by last_name;
+
+5.SELECT concat(upper(substr(last_name,1,1)),substr(last_name,2)) as name,length(last_name) Lengt where last_name like 'J%' or last_name like 'A%' or last_name like 'M%' from employees;
+
+6.select last_name, round(months_between(sysdate,hire_date),0) Months_worked from employees order by 2;
+7. select last_name,'earns',salary,'monthly but wants',(salary*3) from employes;
+
+8.select first_name,lpad(salary,15,'$');
+===========================================================================
+                                 4
+=========================================================================
+SELECT AVG(salary), MAX(salary),MIN(salary), SUM(salary) FROM   employees WHERE  job_id LIKE '%REP%';
+
+SELECT MIN(hire_date), MAX(hire_date) FROM	  employees;
+ 
+
+corellated sub queriesS:
+mysql> select last_name,salary,department_id from employees surya where salary >(select avg(salary) from employees where department_id=surya.department_id);
++-----------+----------+---------------+
+| last_name | salary   | department_id |
++-----------+----------+---------------+
+| King      | 24000.00 |            90 |
+| Hunold    |  9000.00 |            60 |
+| Ernst     |  6000.00 |            60 |
+| Greenberg | 12000.00 |           100 |
+| Faviet    |  9000.00 |           100 |
+| Raphaely  | 11000.00 |            30 |
+| Weiss     |  8000.00 |            50 |
+| Fripp     |  8200.00 |            50 |
+| Kaufling  |  7900.00 |            50 |
+| Vollman   |  6500.00 |            50 |
+| Mourgos   |  5800.00 |            50 |
+| Ladwig    |  3600.00 |            50 |
+| Rajs      |  3500.00 |            50 |
+| Russell   | 14000.00 |            80 |
+| Partners  | 13500.00 |            80 |
+| Errazuriz | 12000.00 |            80 |
+| Cambrault | 11000.00 |            80 |
+| Zlotkey   | 10500.00 |            80 |
+| Tucker    | 10000.00 |            80 |
+| Bernstein |  9500.00 |            80 |
+| Hall      |  9000.00 |            80 |
+| King      | 10000.00 |            80 |
+| Sully     |  9500.00 |            80 |
+| McEwen    |  9000.00 |            80 |
+| Vishney   | 10500.00 |            80 |
+| Greene    |  9500.00 |            80 |
+| Ozer      | 11500.00 |            80 |
+| Bloom     | 10000.00 |            80 |
+| Fox       |  9600.00 |            80 |
+| Abel      | 11000.00 |            80 |
+| Sarchand  |  4200.00 |            50 |
+| Bull      |  4100.00 |            50 |
+| Chung     |  3800.00 |            50 |
+| Dilly     |  3600.00 |            50 |
+| Bell      |  4000.00 |            50 |
+| Everett   |  3900.00 |            50 |
+| Hartstein | 13000.00 |            20 |
+| Higgins   | 12000.00 |           110 |
++-----------+----------+---------------+
+38 rows in set (0.01 sec)
+
+
+mysql> select employee_id ,last_name,job_id,department_id from employees surya where exists (select 'employee_id' from employees where manager_id=surya.employee_id);
++-------------+-----------+---------+---------------+
+| employee_id | last_name | job_id  | department_id |
++-------------+-----------+---------+---------------+
+|         100 | King      | AD_PRES |            90 |
+|         101 | Kochhar   | AD_VP   |            90 |
+|         102 | De Haan   | AD_VP   |            90 |
+|         103 | Hunold    | IT_PROG |            60 |
+|         108 | Greenberg | FI_MGR  |           100 |
+|         114 | Raphaely  | PU_MAN  |            30 |
+|         120 | Weiss     | ST_MAN  |            50 |
+|         121 | Fripp     | ST_MAN  |            50 |
+|         122 | Kaufling  | ST_MAN  |            50 |
+|         123 | Vollman   | ST_MAN  |            50 |
+|         124 | Mourgos   | ST_MAN  |            50 |
+|         145 | Russell   | SA_MAN  |            80 |
+|         146 | Partners  | SA_MAN  |            80 |
+|         147 | Errazuriz | SA_MAN  |            80 |
+|         148 | Cambrault | SA_MAN  |            80 |
+|         149 | Zlotkey   | SA_MAN  |            80 |
+|         201 | Hartstein | MK_MAN  |            20 |
+|         205 | Higgins   | AC_MGR  |           110 |
++-------------+-----------+---------+---------------+
+18 rows in set (0.00 sec)
+
+======================practise 6:============================
+
+SELECT e.last_name, d.department_name, e.salary FROM employees e, departments d WHERE e.department_id = d.department_id AND (salary, NVL(commission_pct,0)) IN (SELECT salary, NVL(commission_pct,0) FROM employees e, departments d WHERE e.department_id = d.department_id AND d.location_id = 1700);
+
+SELECT last_name, hire_date, salary FROM employees WHERE (salary, NVL(commission_pct,0)) IN (SELECT salary, NVL(commission_pct,0) FROM employees WHERE last_name = ’Kochhar’) AND last_name != ’Kochhar’;
+mysql> SELECT last_name, hire_date, salary FROM employees WHERE (salary, ifnull(commission_pct,0)) IN (SELECT salary, ifnull(commission_pct,0) FROM employees WHERE last_name = 'Kochhar') AND last_name != 'Kochhar';
++-----------+------------+----------+
+| last_name | hire_date  | salary   |
++-----------+------------+----------+
+| De Haan   | 1993-01-13 | 17000.00 |
++-----------+------------+----------+
+1 row in set (0.00 sec)
+
+
+4.mysql>  SELECT last_name, job_id, salary FROM employees WHERE salary > ALL (SELECT salary FROM employees WHERE job_id = 'SA_MAN') ORDER BY salary DESC;
++-----------+---------+----------+
+| last_name | job_id  | salary   |
++-----------+---------+----------+
+| King      | AD_PRES | 24000.00 |
+| Kochhar   | AD_VP   | 17000.00 |
+| De Haan   | AD_VP   | 17000.00 |
++-----------+---------+----------+
+3 rows in set (0.00 sec)
+
+5.mysql> select employee_id,last_name,department_id from employees where department_id in(select department_id from departments where location_id in(select location_id from locations where city
+    -> like 'T%'));
++-------------+-----------+---------------+
+| employee_id | last_name | department_id |
++-------------+-----------+---------------+
+|         201 | Hartstein |            20 |
+|         202 | Fay       |            20 |
++-------------+-----------+---------------+
+2 rows in set (0.00 sec)
+
+
